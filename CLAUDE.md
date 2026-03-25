@@ -1,5 +1,9 @@
 # CLAUDE.md — MDS Prototyping Studio
 
+> **Claude Code**: this file is auto-enforced via a `SessionStart` hook — rules are active from the first message.
+> **Claude Desktop**: use `docs/claude-desktop-prompt.md` as the project system prompt — it contains the same rules and is interchangeable with this file.
+> **New project**: use the `mds-new-app` skill (`.claude/skills/mds-new-app/`) to scaffold a fresh app from this template.
+
 This is a **rapid UI prototyping environment** using the Innovaccer Masala Design System (MDS). Think of it like Lovable/v0/Figma Make — but outputting production-grade React code with real design system components, tokens, and helper classes for consistent UX.
 
 ## Purpose

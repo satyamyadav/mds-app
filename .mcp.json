@@ -2,7 +2,7 @@
   "mcpServers": {
     "masala-design-system": {
       "command": "npx",
-      "args": ["@innovaccer/mds-mcp"]
+      "args": ["-y", "@innovaccer/mds-mcp"]
     },
     "Figma Dev Mode MCP": {
       "url": "http://127.0.0.1:3845/sse"
