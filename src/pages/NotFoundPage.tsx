@@ -1,8 +1,11 @@
-import { EmptyState } from '@innovaccer/design-system';
-import { Link } from 'react-router';
+import { Button, EmptyState } from '@innovaccer/design-system';
+import { useNavigate } from 'react-router';
 import { Page } from '../components/app/Page';
+import { ROUTES } from '../app/router/routes';
 
 export function NotFoundPage() {
+  const navigate = useNavigate();
+
   return (
     <Page>
       <EmptyState
@@ -10,7 +13,9 @@ export function NotFoundPage() {
         description="The page you're looking for doesn't exist."
         size="large"
       >
-        <Link to="/">Go Home</Link>
+        <Button styleType="outlined" onClick={() => navigate(ROUTES.HOME)}>
+          Go to overview
+        </Button>
       </EmptyState>
     </Page>
   );

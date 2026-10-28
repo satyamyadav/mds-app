@@ -15,13 +15,26 @@ interface MenuItem {
 interface SidebarLayoutProps {
   menus: MenuItem[];
   defaultActive?: string;
+  /** Controlled active menu. Pass with `onSelect` when menus act as filters. */
+  active?: string;
+  onSelect?: (name: string) => void;
+  /** `panel` (default): white content area. `canvas`: grey background for card layouts like dashboards. */
+  variant?: 'panel' | 'canvas';
   children: ReactNode;
 }
 
-export function SidebarLayout({ menus, defaultActive, children }: SidebarLayoutProps) {
+export function SidebarLayout({
+  menus,
+  defaultActive,
+  active: activeProp,
+  onSelect,
+  variant = 'panel',
+  children,
+}: SidebarLayoutProps) {
   const navigate = useNavigate();
   const { expanded, toggle } = useSidebarStore();
-  const [active, setActive] = useState(defaultActive ?? menus[0]?.name ?? '');
+  const [activeState, setActive] = useState(defaultActive ?? menus[0]?.name ?? '');
+  const active = activeProp ?? activeState;
 
   return (
     <div className="app-sidebar-layout">
@@ -34,6 +47,7 @@ export function SidebarLayout({ menus, defaultActive, children }: SidebarLayoutP
           active={{ name: active }}
           onClick={(menu: { name: string; link?: string }) => {
             setActive(menu.name);
+            onSelect?.(menu.name);
             if (menu.link) navigate(menu.link);
           }}
           autoCollapse={false}
@@ -42,7 +56,9 @@ export function SidebarLayout({ menus, defaultActive, children }: SidebarLayoutP
           <Icon name={expanded ? 'chevron_left' : 'chevron_right'} size={16} />
         </div>
       </nav>
-      <div className="app-sidebar-layout__content">{children}</div>
+      <div className={`app-sidebar-layout__content app-sidebar-layout__content--${variant}`}>
+        {children}
+      </div>
     </div>
   );
 }

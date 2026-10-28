@@ -1,112 +1,110 @@
-# MDS Prototyping Studio
+# MDS Prototyping Template
 
-Rapidly prototype UI features using the **Innovaccer Masala Design System (MDS)** — like Lovable, v0, or Figma Make, but outputting production-grade React code with real design system components, tokens, and helper classes.
+A React starter for quickly building realistic UI prototypes with the **Innovaccer Masala Design System (MDS)**, set up for AI-assisted work in Claude Code. Describe a screen or paste a Figma link, and Claude builds it with real MDS components, helper classes and tokens, backed by a mock API. No backend needed.
 
-## Prerequisites
+Built for designers and engineers. The output is plain, readable React that you can hand off.
 
-```bash
-node --version   # v18+ required
-npm --version    # v9+ required
-git --version    # any recent version
-```
+## Create a project
 
-## Quick Start
+Use this repo as a GitHub template (**Use this template**), or:
 
 ```bash
-git clone --depth 1 https://github.com/satyamyadav/mds-app.git
-cd mds-app
-npm install --legacy-peer-deps
+npx degit satyamyadav/mds-app my-proto
+cd my-proto
+git init
+npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`. MSW mock API is active automatically.
+Open http://localhost:5173.
 
-## Use with Claude Code
+## Add an app
 
-This repo is optimized for AI-assisted prototyping with Claude Code:
+One project can host several prototype **sub-apps**. Each lives in `src/apps/<app-id>/`, is served at `/apps/<app-id>`, gets a card on the launcher (`/`) and a dropdown in the header listing its pages.
 
-```bash
-cd mds-app
-claude
-```
+- **With Claude Code:** run `/mds-new-app` (or just ask for a new app). Claude asks for the name, pages and data, then scaffolds it.
+- **Manually:**
+  1. Copy the structure of `src/apps/care-management/`: `app.tsx` (the `SubApp` definition: id, name, description, icon, `basePath`, `nav`, relative `routes`), `routes.ts` (path constants under `/apps/<app-id>`), `pages/`, `features/`, `mocks/`.
+  2. Register the app in `src/apps/registry.ts`. That wires its routes, launcher card and header dropdown.
+  3. Export the app's MSW handlers from `src/apps/<app-id>/mocks/index.ts` and add them to `src/mocks/handlers/index.ts`. Prefix the mock API paths with `/api/<app-id>/`.
 
-### Slash Commands
+## Requirements
+
+- Node `^20.19.0 || >=22.12.0` (`.nvmrc` pins 22, and `engine-strict` is on, so `npm install` fails on older Node)
+- npm
+- [Claude Code](https://claude.com/claude-code) or Claude Desktop, for AI-assisted prototyping (optional)
+
+## Scripts
 
 | Command | Description |
-|---------|-------------|
-| `/new-page [description]` | Create a new page with routing and nav |
-| `/new-feature [description]` | Scaffold a full feature module (types, API, hooks, pages, mocks) |
-| `/new-component [description]` | Create a reusable component using MDS |
-| `/from-figma [url]` | Implement UI from a Figma design URL |
-| `/mds-lookup [query]` | Look up MDS components, patterns, helpers, tokens |
+|---|---|
+| `npm run dev` | Dev server with HMR |
+| `npm run build` | Type-check + production build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | ESLint |
 
-### MCP Tools
+## MCP setup
 
-- **masala-design-system** — Search 103+ MDS components, get props/examples, find patterns, validate code
-- **Figma Dev Mode** — Read designs from Figma, get screenshots, extract design context
+Claude looks up the design system through the [`@innovaccer/mds-mcp`](https://www.npmjs.com/package/@innovaccer/mds-mcp) MCP server instead of relying on docs kept in this repo.
 
-## Use with Claude Desktop
+- **Claude Code:** `.mcp.json` is included. It registers `masala-design-system` (`npx -y @innovaccer/mds-mcp`) and `Figma Dev Mode MCP` (`http://127.0.0.1:3845/sse`, served by the Figma desktop app when Dev Mode MCP is enabled). Run `claude` in the project, approve the servers, and check them with `/mcp`. Claude is instructed (in `CLAUDE.md`) to confirm the MDS MCP responds before any UI work, and to stop and ask you to connect it if it doesn't.
+- **Claude Desktop:** see [docs/claude-desktop.md](docs/claude-desktop.md).
 
-See [`docs/claude-desktop-prompt.md`](docs/claude-desktop-prompt.md) for setup instructions and the system prompt to use in a Claude Desktop project.
+## Skills
 
-## Tech Stack
+Project skills live in `.claude/skills/`. Claude Code picks the right one automatically.
 
-| Layer | Tool |
-|-------|------|
-| Framework | React 19 + TypeScript 5.9 + Vite 8 |
-| UI Components | `@innovaccer/design-system@next` (v5) |
-| Routing | react-router v7 |
-| Server State | TanStack Query v5 |
-| Client State | Zustand |
-| Forms | react-hook-form + zod |
-| Mocking | MSW v2 (browser, always on in dev) |
-| Lint/Format | ESLint 9 + Prettier + Husky pre-commit |
+| Skill | Purpose |
+|---|---|
+| `mds-ui` | How to look up components, props, helpers and tokens via the MCP, plus repo gotchas |
+| `mds-prototype-guide` | Layout, density, states and copy rules that make a prototype feel like a real product |
+| `mds-new-app` | Create a sub-app at `/apps/<app-id>` with its own nav, pages, features and mocks |
+| `mds-new-page` | Add a page, route and header nav item to a sub-app |
+| `mds-new-feature` | Add a feature module to a sub-app: types, mock API, query hooks, pages |
+| `mds-new-component` | Add a reusable component |
+| `mds-from-figma` | Implement a Figma frame with MDS components |
 
-## Project Structure
+`CLAUDE.md` holds the project rules and workflow: clarify, plan, build in small steps, and keep `npx tsc -b --noEmit` passing.
+
+## Example pages
+
+| Route | Page |
+|---|---|
+| `/` | App launcher: a card for each registered sub-app |
+| `/apps/care-management` | Care Management dashboard: left nav (Overview / Care gaps / Risk), KPI cards, ECharts panels, needs-attention list |
+| `/apps/care-management/patients`, `.../patients/:id` | Patients feature: async table with search and pagination, detail view, create/edit form |
+| `/apps/care-management/referrals/new` | Form example (react-hook-form + zod) |
+| `/settings` | Account settings, opened from the header account menu |
+| `*` | 404 |
+
+`src/apps/care-management/` is the reference sub-app, and its `features/patients/` is the reference to copy for new features.
+
+## Project structure
 
 ```
 src/
-  app/
-    layouts/        # Header nav + layout shell
-    providers/      # QueryClient + Router + MDS CSS
-    router/         # Route definitions
-  components/
-    app/            # Shared: Page, PageHeader, AppTable, SidebarLayout, Toast
-    patterns/       # Reusable: FilterBar, ConfirmDialog
-  features/
-    patients/       # Example CRUD feature (copy this for new features)
-  pages/            # Standalone pages (Home, FormExample, NotFound)
-  services/         # Shared API client
-  store/            # Zustand stores (sidebar, toast)
-  mocks/            # MSW handlers + mock data
-  types/            # Global shared types
+  main.tsx              # Starts the MSW worker, then renders the app
+  app/                  # Providers, shell router (routes.ts, index.tsx), AppLayout + AppHeader (dropdown nav built from the app registry)
+  apps/
+    types.ts            # SubApp / AppNavLink types
+    registry.ts         # List of sub-apps: register new apps here
+    care-management/    # Example sub-app: app.tsx, routes.ts, pages/, features/ (patients, dashboard), mocks/
+  components/app/       # Page, PageHeader, AppTable, EmptyState, LoadingState, SidebarLayout, Toasts
+  components/patterns/  # ConfirmDialog
+  pages/                # Shell pages: app launcher, settings, 404
+  services/apiClient.ts # fetch wrapper for /api
+  store/                # zustand stores (toast, sidebar)
+  mocks/                # MSW worker + handler registry (one line per sub-app)
 ```
 
-## Available Scripts
+Stack: React 19, TypeScript 5.9, Vite 8 (SWC), `@innovaccer/design-system` v5, react-router 7, TanStack Query 5, zustand, react-hook-form + zod, MSW 2, ECharts.
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Dev server with HMR |
-| `npm run build` | TypeScript check + production build |
-| `npm run lint` | ESLint |
-| `npm run preview` | Preview production build |
+## Deploying
 
-## Adding a Page
+`npm run build` produces a static site in `dist/`.
 
-1. Create component in `src/pages/` — wrap in `<Page>` for scroll
-2. Add route to `src/app/router/routes.ts` + `index.tsx`
-3. Add nav item in `src/app/layouts/AppLayout.tsx`
-
-## Adding a Feature
-
-Copy `src/features/patients/`:
-1. `types/` — Zod schema + TypeScript types
-2. `services/` — API functions using `apiClient`
-3. `hooks/` — TanStack Query hooks
-4. `components/` — UI components
-5. `pages/` — Route pages
-6. Add MSW handlers in `src/mocks/handlers/`
-7. Wire up routing + nav
+- **The mock API runs in production too.** MSW starts in every build, so a deployed prototype has data. `public/mockServiceWorker.js` must be served from the site root, or from your Vite `base` path.
+- **SPA fallback is required.** Routes are client-side, so configure your host to serve `index.html` for unknown paths. On Netlify, use a `_redirects` file with `/* /index.html 200`. On Vercel, use a rewrite to `/index.html`. GitHub Pages needs a `404.html` copy of `index.html`.
 
 ## License
 

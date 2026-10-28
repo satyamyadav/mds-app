@@ -12,9 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@innovaccer/design-system": "^5.0.0-22",
-    "@innovaccer/helpers": "^2.0.1",
-    "@innovaccer/rich-text-editor": "^3.0.2",
+    "@innovaccer/design-system": "^5.0.0-31",
     "@tanstack/react-query": "^5.95.2",
     "echarts": "^6.0.0",
     "echarts-for-react": "^3.0.6",
@@ -26,22 +24,18 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
     "@eslint/js": "^9.39.4",
-    "@rolldown/plugin-babel": "^0.2.1",
-    "@types/babel__core": "^7.20.5",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "babel-plugin-react-compiler": "^1.0.0",
+    "@vitejs/plugin-react-swc": "^4.3.3",
     "eslint": "^9.39.4",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
-    "msw": "^2.12.14",
+    "msw": "~2.15.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.57.0",
@@ -57,5 +51,9 @@
     "workerDirectory": [
       "public"
     ]
-  }
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "license": "MIT"
 }

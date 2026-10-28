@@ -1,6 +1,5 @@
+// Shell routes only. Each sub-app keeps its own route constants (e.g. src/apps/care-management/routes.ts).
 export const ROUTES = {
   HOME: '/',
-  PATIENTS: '/patients',
-  PATIENT_DETAIL: '/patients/:id',
-  FORM_EXAMPLE: '/form-example',
+  SETTINGS: '/settings',
 } as const;

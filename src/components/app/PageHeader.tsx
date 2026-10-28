@@ -35,7 +35,12 @@ export function PageHeader({ title, breadcrumbs, actions, showBackButton }: Page
       actions={actions}
       button={
         showBackButton ? (
-          <Button icon="arrow_back" appearance="transparent" onClick={() => navigate(-1)} />
+          <Button
+            icon="arrow_back"
+            appearance="transparent"
+            size="tiny"
+            onClick={() => navigate(-1)}
+          />
         ) : undefined
       }
     />

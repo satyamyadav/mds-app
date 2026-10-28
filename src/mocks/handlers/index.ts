@@ -1,3 +1,4 @@
-import { patientHandlers } from './patientHandlers';
+import { careManagementHandlers } from '../../apps/care-management/mocks';
 
-export const handlers = [...patientHandlers];
+// One import per sub-app.
+export const handlers = [...careManagementHandlers];

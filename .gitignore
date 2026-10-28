@@ -25,3 +25,6 @@ dist-ssr
 
 # Claude Code superpowers
 .superpowers/
+
+# Claude Code personal settings
+.claude/settings.local.json

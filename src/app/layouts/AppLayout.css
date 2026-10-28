@@ -1,47 +1,33 @@
-/* Header — 47px as per Figma */
+/* Header — 48px + 1px divider = 49px, matching the Innovaccer product shell */
 .app-header {
-  height: 47px;
+  height: 48px;
+}
+
+/* Top-level nav items read as plain text links, not buttons */
+.app-header .app-header__nav-item {
+  font-weight: var(--font-weight-normal);
+  color: var(--text);
+  padding-left: 0;
+  padding-right: 0;
+  background: transparent;
+}
+
+.app-header .app-header__nav-item:hover,
+.app-header .app-header__nav-item--active,
+.app-header .app-header__nav-item:hover *,
+.app-header .app-header__nav-item--active * {
+  color: var(--primary);
+}
+
+.app-header__menu-item--active,
+.app-header__menu-item--active * {
+  color: var(--primary);
 }
 
 .app-header__logo {
   width: 32px;
   height: 32px;
   cursor: pointer;
-}
-
-.app-header__nav-item {
-  white-space: nowrap;
-}
-
-.app-header__nav-item--active {
-  color: var(--primary);
-}
-
-.app-header__search {
-  width: 333px;
-  flex-shrink: 0;
-}
-
-.app-header__icon-btn {
-  position: relative;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.app-header__icon-btn:hover {
-  background: var(--secondary-lighter);
-}
-
-.app-header__badge {
-  position: absolute;
-  top: -2px;
-  right: -4px;
-  font-size: 9px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
 }
 
 /* Page wrapper — used by Page component */
@@ -92,6 +78,33 @@
 .app-sidebar-layout__content {
   flex: 1;
   overflow-y: auto;
+}
+
+.app-sidebar-layout__content--panel {
   padding: var(--spacing-20) 0;
   background: var(--white);
+}
+
+/* Canvas: grey background; the Page inside owns the padding */
+.app-sidebar-layout__content--canvas .app-page {
+  height: auto;
+  overflow: visible;
+}
+
+/* App launcher cards (src/pages/AppLauncherPage.tsx) */
+.app-launcher__card {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.app-launcher__card:hover,
+.app-launcher__card:focus-visible {
+  box-shadow: var(--shadow-m);
+}
+
+.app-launcher__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-20);
+  background: var(--primary-ultra-light);
 }

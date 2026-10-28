@@ -11,6 +11,10 @@ interface AppTableProps extends Omit<TableProps, 'data' | 'schema'> {
   onPageChange?: (page: number) => void;
 }
 
+/**
+ * Size follows the MDS table guideline: `standard` (default) for resource tables whose rows open a
+ * detail view; pass `size="compressed"` (or `"tight"`) for dense, read-only data tables.
+ */
 export function AppTable({
   data,
   schema,
